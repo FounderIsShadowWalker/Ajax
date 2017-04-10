@@ -8,30 +8,34 @@
 <body>
 <script>
     window.onload = function(){
-        $.ajax({
-            url: 'http://localhost:3000',
-            type: 'post',
-            data: {
-                name: 1234,
-                password: 2345
-            },
-            dataType: 'jsonp',
-            callback: function(){
-                console.log('jsonp callback')
-            },
-            load: function(){
-                console.log('I am loading');
-            },
-            error: function(){
-                console.log('Ajax Error');
-            },
-            complete: function(){
-                console.log('After all, complete!!!');
-            },
-            success: function(){
-                console.log('Ajax success');
-            }
-        })
+        for(var i=0;i <10; i++) {
+            $.ajax({
+                url: 'http://localhost:3000',
+                type: 'post',
+                data: {
+                    name: 1234,
+                    password: 2345
+                },
+                dataType: 'jsonp',
+                callback: function (para) {
+                    console.log(para);
+                    console.log('jsonp callback')
+                },
+                load: function () {
+                    console.log('I am loading');
+                },
+                error: function () {
+                    console.log('Ajax Error');
+                },
+                complete: function () {
+                    console.log('After all, complete!!!');
+                },
+                success: function () {
+                    console.log('Ajax success');
+                }
+            })
+        }
+
     }
 </script>
 </body>

@@ -1,5 +1,6 @@
-
 window.$  = (function(){
+
+    var jsonpNum = 0;
 
     //序列化参数
     function param(data){
@@ -18,19 +19,10 @@ window.$  = (function(){
     function loadJS(url, callback){
         var doc = document, script = document.createElement('script'), body = doc.body;
         script.type = 'text/javascript';
-        //解决IE8 onLoad 问题
-        if(script.readyState){
-            script.onreadystatechange = function() {
-                if(script.readyState === 'loaded' || script.readyState === 'complete'){
-                    script.onreadystatechange = null;
-                    callback && callback();
-                }
-            }
-        }else{
-            script.onload = function(){
-                callback && callback();
-            }
+        script.onload = function(){
+            // callback && callback();
         }
+
 
         script.src = url;
         body.appendChild(script);
@@ -77,12 +69,23 @@ window.$  = (function(){
 
         if (_opts.dataType.toUpperCase() === 'JSONP'){
 
-            $.founder = function founder(para){
-                console.log(para);
-                console.log('i am founder');
+            if (param(_opts.data) != "") {
+                _opts.url += (_opts.url.indexOf('?') < 0 ? '?' : '&') + param(_opts.data);
             }
 
-            console.log(_opts.url, _opts.callback);
+             _opts.url += "callback=callback" + jsonpNum;
+
+             window["callback" + jsonpNum] = function (para) {
+                 _opts.callback(para);
+                 window["callback" + jsonpNum] = null;
+             }
+
+             jsonpNum ++;
+             
+             console.log(_opts.url, _opts.callback);
+
+
+
             loadJS(_opts.url, _opts.callback);
         }else{
             function checkTimeout() {
@@ -123,7 +126,6 @@ window.$  = (function(){
 
             xhr.open(_opts.type, _opts.url, _opts.async);
             if (_opts.type.toUpperCase() === 'POST') {
-                console.log()
                 xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             }
             xhr.send(_opts.type.toUpperCase() === 'GET' ? null : param(_opts.data));
@@ -131,6 +133,6 @@ window.$  = (function(){
         }
     }
     return {
-        ajax: ajax
+        ajax: ajax,
     }
 })();

@@ -95,7 +95,7 @@ error: function(){
  	<pre>
  	function loadJS(data){
  	   var doc = document, script =   document.createElement('script'), body = doc.body;
-        script.type = 'text/javascript';
+        script.type = 'text/ja**vascript';
         script.text = data;
         body.append(script);
  	}
@@ -105,3 +105,4 @@ error: function(){
 
   
  
+**
